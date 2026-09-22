@@ -5,7 +5,10 @@ const { sendWhatsAppAlert } = require('../services/whatsappService');
 // yeni stok hareketi ekle
 exports.createMovement = async (req, res) => {
     try {
-        const { product_id, movement_type, quantity, action_reason, batch_number, expiration_date, notes, performed_by } = req.body;
+        let { product_id, movement_type, quantity, action_reason, batch_number, expiration_date, notes, performed_by } = req.body;
+        
+        // miktar string olarak gelirse sayiya cevir
+        quantity = Number(quantity);
 
         // urun var mi kontrol et
         const product = await Product.findById(product_id);

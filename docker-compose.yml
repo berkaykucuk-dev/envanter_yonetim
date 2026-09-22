@@ -1,13 +1,4 @@
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: envanter_mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - envanter_mongo_data:/data/db
-    restart: unless-stopped
-
   envanter_backend:
     build: ./backend
     container_name: envanter_backend
@@ -15,12 +6,10 @@ services:
       - "5050:5050"
     environment:
       - PORT=5050
-      - MONGODB_URI=mongodb://mongodb:27017/envanter_db
-      - WHATSAPP_API_URL=http://host.docker.internal:3000/api/campaigns
+      - MONGODB_URI=mongodb://host.docker.internal:27018/envanter_db
+      - WHATSAPP_API_URL=http://host.docker.internal:3000/api/v1/campaigns
       - WHATSAPP_API_KEY=wa_80121692114fb8adb2317084c9566f73761d656f45150de7b97fa6ee7ca9991f
       - WHATSAPP_TARGET_TAG=YÖNETİCİ
-    depends_on:
-      - mongodb
     restart: unless-stopped
 
   envanter_frontend:
@@ -34,7 +23,4 @@ services:
     depends_on:
       - envanter_backend
     restart: unless-stopped
-
-volumes:
-  envanter_mongo_data:
 
