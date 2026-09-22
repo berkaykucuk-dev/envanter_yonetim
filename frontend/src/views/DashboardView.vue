@@ -35,7 +35,7 @@
                 <BaseSelect v-model="movement.movement_type" required>
                   <option value="IN">Giriş (IN)</option>
                   <option value="OUT">Çıkış (OUT)</option>
-                </select>
+                </BaseSelect>
               </FormField>
               <FormField label="Miktar">
                 <BaseInput v-model="movement.quantity" type="number" required />
