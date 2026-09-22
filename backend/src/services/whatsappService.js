@@ -18,9 +18,8 @@ const sendWhatsAppAlert = async (productName, currentStock) => {
         await axios.post(apiUrl, {
             name: `Stok Uyarısı - ${productName}`,
             templateId: null, // serbest formatta mesaj
-            customMessage: messageText,
-            targetTags: [targetTag],
-            targetPhones: []
+            messageContent: messageText,
+            targetTag: targetTag
         }, {
             headers: {
                 'x-api-key': apiKey
