@@ -1,6 +1,8 @@
 <template>
-  <DashboardView />
+  <DashboardLayout>
+    <router-view />
+  </DashboardLayout>
 </template>
 <script setup>
-import DashboardView from './views/DashboardView.vue'
+import DashboardLayout from './layouts/DashboardLayout.vue'
 </script>

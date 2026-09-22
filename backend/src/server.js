@@ -5,6 +5,9 @@ const cors = require('cors');
 
 const productRoutes = require('./routes/productRoutes');
 const movementRoutes = require('./routes/movementRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const logRoutes = require('./routes/logRoutes');
+const { log } = require('./utils/logger');
 
 const app = express();
 
@@ -15,14 +18,16 @@ app.use(express.json());
 // rotalar
 app.use('/api/products', productRoutes);
 app.use('/api/movements', movementRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/logs', logRoutes);
 
 // veritabanına bağlan
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('mongodb baglantisi basarili.'))
-    .catch((err) => console.error('mongodb baglanti hatasi:', err));
+    .then(() => log('mongodb baglantisi basarili.', 'INFO'))
+    .catch((err) => log('mongodb baglanti hatasi: ' + err, 'ERROR'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`sunucu ${PORT} portunda calisiyor.`);
+    log(`sunucu ${PORT} portunda calisiyor.`, 'INFO');
 });
 

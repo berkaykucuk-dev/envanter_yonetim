@@ -1,34 +1,43 @@
 const axios = require('axios');
+const Settings = require('../models/Settings');
+const { log } = require('../utils/logger');
 
 // whatsapp uzerinden mesaj gonderme fonksiyonu
 const sendWhatsAppAlert = async (productName, currentStock) => {
     try {
         const apiUrl = process.env.WHATSAPP_API_URL;
         const apiKey = process.env.WHATSAPP_API_KEY;
-        const targetTag = process.env.WHATSAPP_TARGET_TAG;
 
-        if (!apiUrl || !apiKey || !targetTag) {
-            console.log('whatsapp ayarlari eksik, mesaj gonderilemedi.');
+        let settings = await Settings.findOne();
+        if (!settings) {
+            settings = { targetTag: 'YÖNETİCİ', messageTemplate: '⚠️ DİKKAT: {UrunAdi} kritik seviyede! Kalan stok: {KalanStok}' };
+        }
+
+        if (!apiUrl || !apiKey) {
+            log('whatsapp ayarlari (URL veya KEY) eksik, mesaj gonderilemedi.', 'WARN');
             return;
         }
 
-        const messageText = `⚠️ DİKKAT: ${productName} adlı ürünün stoğu kritik seviyeye düştü! (Kalan: ${currentStock})`;
+        // Taslaktaki degiskenleri gercek degerlerle degistiriyoruz
+        const messageText = settings.messageTemplate
+            .replace('{UrunAdi}', productName)
+            .replace('{KalanStok}', currentStock);
 
         // whatsapp otomasyonuna kampanya istegi atiyoruz
         await axios.post(apiUrl, {
             name: `Stok Uyarısı - ${productName}`,
             templateId: null, // serbest formatta mesaj
             messageContent: messageText,
-            targetTag: targetTag
+            targetTag: settings.targetTag
         }, {
             headers: {
                 'x-api-key': apiKey
             }
         });
 
-        console.log(`whatsapp uyarisi gonderildi: ${productName}`);
+        log(`whatsapp uyarisi gonderildi: ${productName} (Etiket: ${settings.targetTag})`, 'INFO');
     } catch (error) {
-        console.error('whatsapp mesaj gonderim hatasi:', error.response?.data || error.message);
+        log(`whatsapp mesaj gonderim hatasi: ${JSON.stringify(error.response?.data || error.message)}`, 'ERROR');
     }
 };
 

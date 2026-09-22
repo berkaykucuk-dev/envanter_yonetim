@@ -1,6 +1,7 @@
 const StockMovement = require('../models/StockMovement');
 const Product = require('../models/Product');
 const { sendWhatsAppAlert } = require('../services/whatsappService');
+const { log } = require('../utils/logger');
 
 // yeni stok hareketi ekle
 exports.createMovement = async (req, res) => {
@@ -93,7 +94,7 @@ exports.createMovement = async (req, res) => {
         res.status(201).json({ success: true, movement: newMovement, current_stock: product.current_stock });
 
     } catch (error) {
-        console.error(error);
+        log('stok hareketi kaydedilemedi: ' + error.message, 'ERROR');
         res.status(500).json({ error: 'stok hareketi kaydedilemedi' });
     }
 };
@@ -113,6 +114,7 @@ exports.getMovements = async (req, res) => {
             
         res.status(200).json(movements);
     } catch (error) {
+        log('hareketler cekilemedi: ' + error.message, 'ERROR');
         res.status(500).json({ error: 'hareketler cekilemedi' });
     }
 };
