@@ -5,9 +5,9 @@ const sendWhatsAppAlert = async (productName, currentStock) => {
     try {
         const apiUrl = process.env.WHATSAPP_API_URL;
         const apiKey = process.env.WHATSAPP_API_KEY;
-        const targetPhone = process.env.WHATSAPP_TARGET_PHONE;
+        const targetTag = process.env.WHATSAPP_TARGET_TAG;
 
-        if (!apiUrl || !apiKey || !targetPhone) {
+        if (!apiUrl || !apiKey || !targetTag) {
             console.log('whatsapp ayarlari eksik, mesaj gonderilemedi.');
             return;
         }
@@ -19,8 +19,8 @@ const sendWhatsAppAlert = async (productName, currentStock) => {
             name: `Stok Uyarısı - ${productName}`,
             templateId: null, // serbest formatta mesaj
             customMessage: messageText,
-            targetTags: [],
-            targetPhones: [targetPhone]
+            targetTags: [targetTag],
+            targetPhones: []
         }, {
             headers: {
                 'x-api-key': apiKey
@@ -36,3 +36,4 @@ const sendWhatsAppAlert = async (productName, currentStock) => {
 module.exports = {
     sendWhatsAppAlert
 };
+

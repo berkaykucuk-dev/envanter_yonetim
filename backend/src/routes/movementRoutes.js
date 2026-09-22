@@ -9,3 +9,4 @@ router.post('/', movementController.createMovement);
 router.get('/', movementController.getMovements);
 
 module.exports = router;
+

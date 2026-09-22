@@ -113,3 +113,4 @@ exports.getMovements = async (req, res) => {
         res.status(500).json({ error: 'hareketler cekilemedi' });
     }
 };
+
