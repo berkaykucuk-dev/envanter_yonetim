@@ -12,10 +12,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// statik arayuz dosyalari
-const path = require('path');
-app.use(express.static(path.join(__dirname, '../public')));
-
 // rotalar
 app.use('/api/products', productRoutes);
 app.use('/api/movements', movementRoutes);
