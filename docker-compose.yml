@@ -1,0 +1,29 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: envanter_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - envanter_mongo_data:/data/db
+    restart: unless-stopped
+
+  envanter_backend:
+    build: ./backend
+    container_name: envanter_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/envanter_db
+      # eger docker for windows kullaniyorsaniz host.docker.internal anamakineye ulasmayi saglar.
+      - WHATSAPP_API_URL=http://host.docker.internal:3000/api/campaigns
+      # api keyinizi ve hedefinizi buraya ekleyin veya .env dosyasindan da okuyabilir.
+      - WHATSAPP_API_KEY=wa_80121692114fb8adb2317084c9566f73761d656f45150de7b97fa6ee7ca9991f
+      - WHATSAPP_TARGET_TAG=YÖNETİCİ
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+volumes:
+  envanter_mongo_data:
