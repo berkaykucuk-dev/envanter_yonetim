@@ -30,3 +30,4 @@ const getLogs = () => {
 };
 
 module.exports = { log, getLogs };
+

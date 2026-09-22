@@ -24,36 +24,76 @@
         </div>
       </div>
       
-      <div class="bg-white rounded shadow-sm border border-slate-200">
-        <div class="px-4 py-3 border-b border-slate-200 bg-slate-50">
-          <h3 class="font-semibold text-slate-700">Tüketim Hızı (Velocity) Tahmini</h3>
-          <p class="text-xs text-slate-500">Son 7 günlük çıkış ortalamasına göre tahmini bitiş süreleri</p>
+      <div class="space-y-6">
+        <div class="bg-white rounded shadow-sm border border-slate-200">
+          <div class="px-4 py-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-slate-700">SKT'si Yaklaşan Ürünler</h3>
+              <p class="text-xs text-slate-500">Son kullanma tarihine 15 günden az kalmış aktif stoklar</p>
+            </div>
+            <span v-if="expiringBatches.length > 0" class="flex h-3 w-3 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            </span>
+          </div>
+          <div class="p-0 overflow-x-auto">
+            <table class="w-full text-sm text-left text-slate-500">
+              <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3">Ürün (SKU)</th>
+                  <th class="px-4 py-3">Parti/Lot</th>
+                  <th class="px-4 py-3 text-right">Kalan</th>
+                  <th class="px-4 py-3 text-right">SKT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="b in expiringBatches" :key="b._id" class="border-b last:border-0 hover:bg-slate-50" :class="b.daysLeft < 3 ? 'bg-red-50' : ''">
+                  <td class="px-4 py-2 font-medium text-slate-900">{{ b.productName }}</td>
+                  <td class="px-4 py-2 text-xs text-slate-500">{{ b.batch_number }}</td>
+                  <td class="px-4 py-2 text-right font-semibold">{{ b.remaining_quantity }}</td>
+                  <td class="px-4 py-2 text-right font-bold" :class="b.daysLeft < 3 ? 'text-red-600' : 'text-amber-600'">
+                    {{ b.daysLeft }} gün
+                  </td>
+                </tr>
+                <tr v-if="expiringBatches.length === 0">
+                  <td colspan="4" class="px-4 py-6 text-center text-slate-400 text-xs">SKT riski olan ürün bulunmuyor.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="p-0">
-          <table class="w-full text-sm text-left text-slate-500">
-            <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th class="px-4 py-3">Ürün</th>
-                <th class="px-4 py-3 text-right">Mevcut</th>
-                <th class="px-4 py-3 text-right">Günlük Tüketim</th>
-                <th class="px-4 py-3 text-right">Tahmini Süre</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="v in velocities" :key="v.id" class="border-b last:border-0 hover:bg-slate-50">
-                <td class="px-4 py-3 font-medium text-slate-900">{{ v.name }}</td>
-                <td class="px-4 py-3 text-right">{{ v.current }}</td>
-                <td class="px-4 py-3 text-right text-red-500">-{{ v.dailyOut.toFixed(1) }}</td>
-                <td class="px-4 py-3 text-right font-semibold" :class="v.daysLeft < 5 ? 'text-red-600' : 'text-emerald-600'">
-                  <span v-if="v.daysLeft === Infinity">Hareketsiz</span>
-                  <span v-else>{{ v.daysLeft }} Gün</span>
-                </td>
-              </tr>
-              <tr v-if="velocities.length === 0">
-                <td colspan="4" class="px-4 py-8 text-center text-slate-400">Yeterli hareket verisi yok.</td>
-              </tr>
-            </tbody>
-          </table>
+        
+        <div class="bg-white rounded shadow-sm border border-slate-200">
+          <div class="px-4 py-3 border-b border-slate-200 bg-slate-50">
+            <h3 class="font-semibold text-slate-700">Tüketim Hızı (Velocity) Tahmini</h3>
+            <p class="text-xs text-slate-500">Son 7 günlük çıkış ortalamasına göre tahmini bitiş süreleri</p>
+          </div>
+          <div class="p-0 overflow-x-auto max-h-[300px] overflow-y-auto">
+            <table class="w-full text-sm text-left text-slate-500">
+              <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200 sticky top-0">
+                <tr>
+                  <th class="px-4 py-3">Ürün</th>
+                  <th class="px-4 py-3 text-right">Mevcut</th>
+                  <th class="px-4 py-3 text-right">Günlük Tüketim</th>
+                  <th class="px-4 py-3 text-right">Tahmini Süre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="v in velocities" :key="v.id" class="border-b last:border-0 hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium text-slate-900">{{ v.name }}</td>
+                  <td class="px-4 py-3 text-right">{{ v.current }}</td>
+                  <td class="px-4 py-3 text-right text-red-500">-{{ v.dailyOut.toFixed(1) }}</td>
+                  <td class="px-4 py-3 text-right font-semibold" :class="v.daysLeft < 5 ? 'text-red-600' : 'text-emerald-600'">
+                    <span v-if="v.daysLeft === Infinity">Hareketsiz</span>
+                    <span v-else>{{ v.daysLeft }} Gün</span>
+                  </td>
+                </tr>
+                <tr v-if="velocities.length === 0">
+                  <td colspan="4" class="px-4 py-8 text-center text-slate-400">Yeterli hareket verisi yok.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -81,6 +121,7 @@ const API_URL = 'http://localhost:5050/api'
 const stats = ref({ totalProducts: 0, criticalProducts: 0, weeklyMovements: 0 })
 const velocities = ref([])
 const chartData = ref({})
+const expiringBatches = ref([])
 const chartOptions = { responsive: true, maintainAspectRatio: false }
 
 const fetchData = async () => {
@@ -121,6 +162,32 @@ const fetchData = async () => {
       return { id: p._id, name: p.name, current: p.current_stock, dailyOut, daysLeft }
     }).sort((a,b) => a.daysLeft - b.daysLeft)
 
+    // SKT Hesaplama
+    const expiring = []
+    const now = new Date()
+    
+    // Aktif partileri bul (IN islemleri ve kalan miktari 0'dan buyuk)
+    const activeBatches = movements.filter(m => m.movement_type === 'IN' && m.remaining_quantity > 0 && m.expiration_date)
+    
+    activeBatches.forEach(b => {
+      const expDate = new Date(b.expiration_date)
+      const daysLeft = Math.ceil((expDate - now) / (1000 * 60 * 60 * 24))
+      
+      // 15 gunden az kaldiysa listeye ekle
+      if (daysLeft <= 15) {
+        expiring.push({
+          _id: b._id,
+          productName: b.product_id.name + ' (' + b.product_id.sku_code + ')',
+          batch_number: b.batch_number,
+          remaining_quantity: b.remaining_quantity,
+          daysLeft: daysLeft < 0 ? 0 : daysLeft,
+          expiration_date: b.expiration_date
+        })
+      }
+    })
+    
+    expiringBatches.value = expiring.sort((a, b) => a.daysLeft - b.daysLeft)
+
     // Chart Data (Son 7 gun grafikleri)
     const dates = [...Array(7)].map((_, i) => {
       const d = new Date()
@@ -155,3 +222,4 @@ const fetchData = async () => {
 
 onMounted(() => fetchData())
 </script>
+

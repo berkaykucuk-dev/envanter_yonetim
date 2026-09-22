@@ -19,8 +19,9 @@
 </template>
 <script setup>
 const links = [
-  { path: '/', name: 'Dashboard' },
+  { path: '/dashboard', name: 'Dashboard' },
   { path: '/inventory', name: 'Total Envanter' },
+  { path: '/stock-control', name: 'Stok Kontrol (Giriş/Çıkış)' },
   { path: '/logs', name: 'Giriş/Çıkış Logları' },
   { path: '/settings', name: 'Mesaj İşlemleri' },
   { path: '/system-logs', name: 'Terminal Logları' }

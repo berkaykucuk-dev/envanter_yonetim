@@ -85,10 +85,11 @@ exports.createMovement = async (req, res) => {
         await newMovement.save();
         await product.save();
 
-        // kritik stok kontrolu
-        if ((movement_type === 'OUT' || movement_type === 'WASTE') && product.current_stock < product.min_stock_level) {
-            // whatsapp uyarisi tetikle
-            sendWhatsAppAlert(product.name, product.current_stock);
+        // kritik stok ve zayi kontrolu
+        if (movement_type === 'WASTE') {
+            sendWhatsAppAlert('WASTE', { UrunAdi: product.name, Miktar: quantity, KalanStok: product.current_stock });
+        } else if (movement_type === 'OUT' && product.current_stock < product.min_stock_level) {
+            sendWhatsAppAlert('CRITICAL', { UrunAdi: product.name, KalanStok: product.current_stock });
         }
 
         res.status(201).json({ success: true, movement: newMovement, current_stock: product.current_stock });

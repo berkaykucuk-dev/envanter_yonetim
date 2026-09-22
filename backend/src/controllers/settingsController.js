@@ -16,19 +16,24 @@ exports.getSettings = async (req, res) => {
 
 exports.updateSettings = async (req, res) => {
     try {
-        const { targetTag, messageTemplate } = req.body;
+        const { whatsappApiUrl, whatsappApiKey, targetTags, templateCritical, templateWaste, templateExpiring } = req.body;
         let settings = await Settings.findOne();
         if (!settings) {
-            settings = new Settings({ targetTag, messageTemplate });
+            settings = new Settings({ whatsappApiUrl, whatsappApiKey, targetTags, templateCritical, templateWaste, templateExpiring });
         } else {
-            settings.targetTag = targetTag;
-            settings.messageTemplate = messageTemplate;
+            settings.whatsappApiUrl = whatsappApiUrl;
+            settings.whatsappApiKey = whatsappApiKey;
+            settings.targetTags = targetTags;
+            settings.templateCritical = templateCritical;
+            settings.templateWaste = templateWaste;
+            settings.templateExpiring = templateExpiring;
         }
         await settings.save();
-        log('Mesaj ayarlari guncellendi: ' + targetTag, 'INFO');
+        log('Mesaj ayarlari guncellendi: ' + targetTags.join(','), 'INFO');
         res.json({ success: true, settings });
     } catch (error) {
         log('Ayarlar guncellenirken hata: ' + error.message, 'ERROR');
         res.status(500).json({ error: 'Ayarlar kaydedilemedi' });
     }
 };
+

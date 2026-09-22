@@ -6,3 +6,4 @@ router.get('/', settingsController.getSettings);
 router.post('/', settingsController.updateSettings);
 
 module.exports = router;
+
