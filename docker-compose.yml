@@ -10,6 +10,8 @@ services:
       - WHATSAPP_API_URL=http://host.docker.internal:3000/api/v1/campaigns
       - WHATSAPP_API_KEY=wa_80121692114fb8adb2317084c9566f73761d656f45150de7b97fa6ee7ca9991f
       - WHATSAPP_TARGET_TAG=YÖNETİCİ
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
   envanter_frontend:
