@@ -90,7 +90,7 @@ const toggleRow = async (productId) => {
   recentMovements.value = []
   
   try {
-    const res = await axios.get(`http://localhost:5050/api/movements?product_id=${productId}`)
+    const res = await axios.get(`http://${window.location.hostname}:5050/api/movements?product_id=${productId}`)
     recentMovements.value = res.data.slice(0, 5)
   } catch(e) {
     console.error(e)

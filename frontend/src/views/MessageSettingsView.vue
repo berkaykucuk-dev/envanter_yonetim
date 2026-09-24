@@ -61,7 +61,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 const settings = ref({ 
   whatsappApiUrl: 'http://host.docker.internal:3000/api/v1/campaigns', 
   whatsappApiKey: '',

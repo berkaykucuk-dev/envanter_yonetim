@@ -15,7 +15,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import ProductTable from '../components/organisms/ProductTable.vue'
 
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 const products = ref([])
 
 const fetchProducts = async () => {

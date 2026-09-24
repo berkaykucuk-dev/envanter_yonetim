@@ -15,7 +15,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
 
 const logs = ref('')
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 let interval = null
 
 const fetchLogs = async () => {

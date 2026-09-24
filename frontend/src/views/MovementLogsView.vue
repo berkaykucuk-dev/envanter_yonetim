@@ -39,7 +39,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const movements = ref([])
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 
 onMounted(async () => {
   try {

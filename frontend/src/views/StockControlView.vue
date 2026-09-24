@@ -85,7 +85,7 @@ import BaseInput from '../components/atoms/BaseInput.vue'
 import BaseSelect from '../components/atoms/BaseSelect.vue'
 import BaseButton from '../components/atoms/BaseButton.vue'
 
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 const products = ref([])
 
 const movement = ref({ product_id: '', movement_type: 'IN', quantity: null, notes: '', batch_number: '', expiration_date: '' })

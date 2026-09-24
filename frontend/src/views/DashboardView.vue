@@ -116,7 +116,7 @@ import { Bar } from 'vue-chartjs'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const API_URL = 'http://localhost:5050/api'
+const API_URL = `http://${window.location.hostname}:5050/api`
 
 const stats = ref({ totalProducts: 0, criticalProducts: 0, weeklyMovements: 0 })
 const velocities = ref([])
