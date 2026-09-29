@@ -3,7 +3,7 @@
     <!-- Mobil Overlay -->
     <Transition name="overlay">
       <div
-        v-if="sidebarOpen"
+        v-if="sidebarOpen && !isDesktop"
         class="fixed inset-0 bg-black/50 z-20 lg:hidden"
         @click="sidebarOpen = false"
       />
@@ -12,7 +12,7 @@
     <!-- Sidebar -->
     <Transition name="slide">
       <aside
-        v-show="sidebarOpen || isDesktop"
+        v-show="sidebarOpen"
         class="fixed lg:static z-30 w-64 bg-slate-900 text-slate-300 flex flex-col h-screen shrink-0"
       >
         <!-- Logo + Kapat Butonu (Mobil) -->
@@ -36,7 +36,7 @@
                 :to="link.path"
                 active-class="bg-indigo-600 text-white border-indigo-400"
                 class="flex items-center gap-3 px-6 py-2.5 hover:bg-slate-800 text-slate-300 border-l-4 border-transparent transition-colors"
-                @click="sidebarOpen = false"
+                @click="!isDesktop && (sidebarOpen = false)"
               >
                 <span class="text-sm font-medium">{{ link.name }}</span>
               </router-link>
@@ -54,10 +54,10 @@
     <div class="flex-1 flex flex-col min-w-0">
       <!-- Header -->
       <header class="h-16 bg-white border-b border-slate-200 flex items-center px-4 md:px-6 shadow-sm z-10 gap-3">
-        <!-- Hamburger (Mobil) -->
+        <!-- Hamburger -->
         <button
-          class="lg:hidden text-slate-500 hover:text-slate-800 transition-colors p-1"
-          @click="sidebarOpen = true"
+          class="text-slate-500 hover:text-slate-800 transition-colors p-1"
+          @click="sidebarOpen = !sidebarOpen"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -77,16 +77,24 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const sidebarOpen = ref(false)
-const isDesktop = ref(false)
+const sidebarOpen = ref(true)
+const isDesktop = ref(true)
 
 const checkDesktop = () => {
+  const wasDesktop = isDesktop.value
   isDesktop.value = window.innerWidth >= 1024
-  if (isDesktop.value) sidebarOpen.value = false
+  
+  // Sadece masaüstünden mobile geçerken menüyü kapat
+  if (wasDesktop && !isDesktop.value) {
+    sidebarOpen.value = false
+  } else if (!wasDesktop && isDesktop.value) {
+    sidebarOpen.value = true
+  }
 }
 
 onMounted(() => {
-  checkDesktop()
+  isDesktop.value = window.innerWidth >= 1024
+  sidebarOpen.value = isDesktop.value
   window.addEventListener('resize', checkDesktop)
 })
 
