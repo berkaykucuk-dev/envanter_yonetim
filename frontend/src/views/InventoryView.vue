@@ -30,7 +30,7 @@
           <div class="absolute inset-0 bg-black/50" @click="closeModal" />
 
           <!-- Modal Kutusu -->
-          <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg">
+          <div class="relative bg-white rounded-sm shadow-xl w-full max-w-lg">
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
               <h3 class="text-base font-semibold text-slate-800">Yeni Ürün Kartı Aç</h3>

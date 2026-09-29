@@ -38,7 +38,6 @@
                 class="flex items-center gap-3 px-6 py-2.5 hover:bg-slate-800 text-slate-300 border-l-4 border-transparent transition-colors"
                 @click="sidebarOpen = false"
               >
-                <span class="text-lg leading-none">{{ link.icon }}</span>
                 <span class="text-sm font-medium">{{ link.name }}</span>
               </router-link>
             </li>
@@ -96,12 +95,12 @@ onUnmounted(() => {
 })
 
 const links = [
-  { path: '/dashboard',     name: 'Dashboard',              icon: '📊' },
-  { path: '/inventory',     name: 'Total Envanter',         icon: '📦' },
-  { path: '/stock-control', name: 'Stok Kontrol',           icon: '🔄' },
-  { path: '/logs',          name: 'Giriş/Çıkış Logları',   icon: '📋' },
-  { path: '/settings',      name: 'Mesaj İşlemleri',        icon: '💬' },
-  { path: '/system-logs',   name: 'Terminal Logları',       icon: '🖥️' },
+  { path: '/dashboard',     name: 'Dashboard' },
+  { path: '/inventory',     name: 'Total Envanter' },
+  { path: '/stock-control', name: 'Stok Kontrol' },
+  { path: '/logs',          name: 'Giriş/Çıkış Logları' },
+  { path: '/settings',      name: 'Mesaj İşlemleri' },
+  { path: '/system-logs',   name: 'Terminal Logları' },
 ]
 </script>
 
